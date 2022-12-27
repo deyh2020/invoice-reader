@@ -1,22 +1,34 @@
 import pytesseract
 import cv2
 import matplotlib.pyplot as plt
-import pdf2image
+from pdf2image import convert_from_path
+import numpy as np
+from io import BytesIO
 from PIL import Image
 
 pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
+poppler_path = r''
 
 filename = 'img/invoice4.pdf'
 
+target_folder = r''
+
 ext = filename.split('.')[-1]
+img = None
 
 if ext == "pdf":
-    ...
+    pages = convert_from_path(filename)
+
+    for page in pages:
+        with BytesIO() as f:
+            page.save(f, format="jpeg")
+            f.seek(0)
+            img_page = Image.open(f)
+
+
 
 elif ext == "png" or ext == "jpg":
-    ...
-
-img = cv2.imread(filename)
+    img = cv2.imread(filename)
 
 try:
     h, w, _ = img.shape
@@ -34,6 +46,10 @@ for b in boxes.splitlines():
 plt.imshow(img)
 plt.show()
 
+
+
+def scan_file():
+    ...
 
 
 
